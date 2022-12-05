@@ -5,7 +5,8 @@ import dotenv from "dotenv";
 dotenv.config();
 import helmet from "helmet";
 import morgan from "morgan"
-import userRoutes from "./routes/users.js" 
+import userRoutes from "./routes/users.js" ;
+import authRoutes from "./routes/auth.js" 
 
 mongoose
   .connect(
@@ -21,6 +22,7 @@ mongoose
   app.use(morgan("common"));
 
   app.use("/api/users",userRoutes)
+  app.use("/api/auth",authRoutes)
  
   
 app.listen(8800, () => {
