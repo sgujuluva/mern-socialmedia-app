@@ -5,6 +5,7 @@ import dotenv from "dotenv";
 dotenv.config();
 import helmet from "helmet";
 import morgan from "morgan"
+import userRoutes from "./routes/users.js" 
 
 mongoose
   .connect(
@@ -13,6 +14,14 @@ mongoose
   )
   .then(() => console.log("Database connected! 😍☕"))
   .catch((error) => console.log(error, "Database did not connect! ☹️❌"));
+
+  /* middleware*/
+  app.use(express.json());
+  app.use(helmet());
+  app.use(morgan("common"));
+
+  app.use("/api/users",userRoutes)
+ 
   
 app.listen(8800, () => {
     console.log("The port is running on 8800!")
