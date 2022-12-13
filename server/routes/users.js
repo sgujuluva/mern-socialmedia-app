@@ -1,6 +1,6 @@
 import express from "express"
 const router = express.Router();
-import {getAllUsers,updateUser,deleteUser,getUser} from "../controllers/users.js"
+import {getAllUsers,updateUser,deleteUser,getUser,followUser} from "../controllers/users.js"
 
 //http://localhost:8800/api/users
 router.get("/", getAllUsers)
@@ -14,6 +14,8 @@ router.delete("/:id",deleteUser)
 //http://localhost:8800/api/users/:id
 router.get("/:id",getUser)
 //follow a user
+//http://localhost:8800/api/users/:id/follow
+router.put("/:id/follow",followUser)   /* ---put--- because ae are update another user name in this user */
 //unfollow a user
 
 export default router
