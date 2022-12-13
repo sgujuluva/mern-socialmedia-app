@@ -7,4 +7,5 @@ router.post("/register", registerUser)
 //http://localhost:8800/api/auth/login
 router.post("/login", loginUser)
 
+
 export default router

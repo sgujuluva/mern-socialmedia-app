@@ -30,12 +30,12 @@ export const loginUser = async (req, res) => {
   const { email, password } = req.body;
 
   try {
-    const user = await User.findOne({
-      email: email,
-    });
-    if (!user) {
-      return res.status(200).json("User not found");
-    } else
+    const user = await User.findOne({email: email});
+    const validPassword = await bcrypt.compare(req.body.password,user.password)
+    if (!user || !validPassword) {
+      return res.status(404).json("User not found or Password is incorrect");
+    } 
+    else
       return res
         .status(200)
         .json({ message: "user is successfully logged in", user });
@@ -43,3 +43,4 @@ export const loginUser = async (req, res) => {
     return res.send(error);
   }
 };
+
