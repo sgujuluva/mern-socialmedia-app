@@ -79,7 +79,7 @@ export const followUser = async (req, res) => {
         await user.updateOne({ $push: { followers: req.body.userId } });
         //update the other user in followings array
         await toFollowUser.updateOne({
-          $push: { followings: req.body.userId },
+          $push: { followings: req.params.id }, //user himself
         });
         return res.status(200).json("A new User is followed")
       } else {
@@ -92,3 +92,32 @@ export const followUser = async (req, res) => {
     res.status(403).json("You cannot follow yourself");
   }
 };
+
+
+//unfollow a user
+export const unfollowUser = async (req, res) => {
+    if (req.body.userId !== req.params.id) {
+      try {
+        /* user himself */
+        const user = await User.findById(req.params.id);
+        /* user who he wants to unfollow */
+        const tounFollowUser = await User.findById(req.body.userId);
+        /* checking whether he is follwing this user already ---checking in followers array */
+        if (user.followers.includes(req.body.userId)) {
+          //update the current user to remove from  follower array
+          await user.updateOne({ $pull: { followers: req.body.userId } });
+          //update the other user to remove from  f in followings array
+          await tounFollowUser.updateOne({
+            $pull: { followings: req.params.id }, //user himself
+          });
+          return res.status(200).json("User is unfollowed")
+        } else {
+          res.send("You dont follow this user");
+        }
+      } catch (error) {
+        res.status(500).json(error);
+      }
+    } else {
+      res.status(403).json("You cannot unfollow yourself");
+    }
+  };
