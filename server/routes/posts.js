@@ -1,6 +1,6 @@
 import express from "express"
 const router = express.Router();
-import {getAllPosts,createPost,updatePost,deletePost} from "../controllers/posts.js"
+import {getAllPosts,createPost,updatePost,deletePost,likePost/* ,getAPost */} from "../controllers/posts.js"
 
 //http://localhost:8800/api/posts
 router.get("/", getAllPosts)
@@ -14,7 +14,11 @@ router.put("/:id", updatePost)
 //http://localhost:8800/api/posts/delete:/id
 router.delete("/delete/:id", deletePost)
 //like a post
+//http://localhost:8800/api/posts/like:/id
+router.put("/like/:id", likePost)
 //get a post
+//http://localhost:8800/api/posts/getpost:/id
+//router.get("/getpost/:id", getAPost)
 //getall post of the user followings (timeline)
 
 

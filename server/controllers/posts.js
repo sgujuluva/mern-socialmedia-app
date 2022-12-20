@@ -35,7 +35,7 @@ export const updatePost = async (req, res) => {
 
 export const deletePost = async (req, res) => {
     try {
-        const getPostToBeDeleted = await Post.findById(req.params.id); // getting the post id which needs to be updated
+        const getPostToBeDeleted = await Post.findById(req.params.id); // getting the post id which needs to be deleted
       
       //check if the user id is same from req.body and post's userId
       if (getPostToBeDeleted.userId === req.body.userId) {
@@ -50,3 +50,22 @@ export const deletePost = async (req, res) => {
       res.send(error);
     } 
 };
+
+/* like /dislike a post */
+export const likePost = async (req,res) => {
+  try {
+        //getting the post id which is to be liked
+    const post = await Post.findById(req.params.id);
+//check if the post belongs to the userid
+    if(!post.likes.includes(req.body.userId)){
+      await post.updateOne({$push: {likes:req.body.userId}})
+      return res.status(200).json("post has been liked")
+    }else{
+      await post.updateOne({$pull: {likes:req.body.userId}})
+      return res.status(200).json("post has been disliked")
+    }
+
+  } catch (error) {
+    return res.send(error)
+  }
+}
